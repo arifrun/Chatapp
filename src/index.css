@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components { 
+  .registration {
+    @apply max-w-[450px] shadow-[#85bdd7e0_0px_30px_30px_-20px] mt-[60px] mb-0 mx-auto px-[35px] py-[25px] rounded-[40px] border-[5px] border-solid border-white;
+    background: #f8f9fd;
+    background: linear-gradient(0deg, #ffffff 0%, #f4f7fb 100%);
+  }
+  .heading {
+    @apply text-center font-black text-3xl text-[#1089d3];
+  }
+  .form {
+    @apply mt-5;
+  }
+  .form .input {
+    @apply w-full shadow-[#cff0ff_0px_10px_10px_-5px] mt-[15px] px-5 py-[15px] rounded-[20px] border-[none];
+    background: white;
+    border-inline: 2px solid transparent;
+  }
+  .form .input::-moz-placeholder {
+    @apply text-[#aaaaaa];
+  }
+  .form .input::placeholder {
+    @apply text-[#aaaaaa];
+  }
+  .form .input:focus {
+    outline: none;
+    border-inline: 2px solid #12b1d1;
+  }
+  .form .forgot-password {
+    @apply block ml-2.5 mt-2.5;
+  }
+  .form .forgot-password a {
+    @apply text-[11px] text-[#0099ff] no-underline;
+  }
+  .form .login-button {
+    @apply block w-full font-[bold] text-[white] shadow-[#fff_0px_20px_10px_-15px] transition-all duration-[0.2s] ease-[ease-in-out] mx-auto my-5 rounded-[20px] border-[none] hover:shadow-[#062467_0px_23px_10px_-20px] hover:scale-[1.03] active:shadow-[#85bdd7e0_0px_15px_10px_-10px] active:scale-95;
+    background: linear-gradient(45deg, #1c4ae0, #9acf12);
+    padding-block: 15px;
+  }
+  .social-account-container {
+    @apply mt-[25px];
+  }
+  .social-account-container .title {
+    @apply block text-center text-[10px] text-[#aaaaaa];
+  }
+  .social-account-container .social-accounts {
+    @apply w-full flex justify-center gap-[15px] mt-[5px];
+  }
+  .social-account-container .social-accounts .social-button {
+    @apply w-10 aspect-[1] grid place-content-center shadow-[#85bdd7e0_0px_12px_10px_-8px] transition-all duration-[0.2s] ease-[ease-in-out] p-[5px] rounded-[50%] border-[5px] border-solid border-[white] hover:scale-[1.2] active:scale-90;
+    background: linear-gradient(45deg, #000000 0%, #707070 100%);
+  }
+  .social-account-container .social-accounts .social-button .svg {
+    @apply fill-[white] m-auto;
+  }
+  .agreement {
+    @apply block text-center mt-[15px];
+  }
+  .agreement a {
+    @apply no-underline text-[#0099ff] text-[9px];
+  }
+}
