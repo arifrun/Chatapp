@@ -25,7 +25,7 @@ const Login = () => {
               <button className="login-button">Sign in</button>   
                <p>Don't have any account. <Link className=" text-[#1c4ae0] border-b	 border-solid border-[#1c4ae0]" to="/registration">Sign in</Link></p>
             </form>
-          </div>
+          </div>    
         </div>
       </div>
     </section>
