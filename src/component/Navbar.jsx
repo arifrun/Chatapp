@@ -18,12 +18,17 @@ const Navbar = () => {
                  <span>Home </span>
                 </Link></li>       
 
-                   <li><Link to="/" className='flex items-center gap-3 py-3 px-3 w-fit'>   
-                <IoChatbubbleEllipsesSharp />
+                   <li><Link to="/chat" className='flex items-center gap-3 py-3 px-3 w-fit'>   
+                  <IoChatbubbleEllipsesSharp />
                   <span className=' text-2xl'> Chat </span>
-                </Link></li> 
+                 </Link></li>  
+
+                 <li><Link to="/chat" className='flex items-center gap-3 py-3 px-3 w-fit'>   
+                  <IoChatbubbleEllipsesSharp />
+                  <span className=' text-2xl'>Group</span>
+                 </Link></li> 
                 
-                <li><Link to="/user" className='flex items-center gap-3 py-3 px-3 w-fit'>   
+                 <li><Link to="/user" className='flex items-center gap-3 py-3 px-3 w-fit'>   
                   <img src=" user.png" alt="user" className='w-10 h-10' />   
 
                   <div> 

@@ -1,7 +1,29 @@
-import React from "react"; 
-import { Link } from "react-router-dom";
+import React, { useState } from "react"; 
+import { Link } from "react-router-dom"; 
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
-const Registration = () => {
+   const Registration = () => { 
+     let [name, setName] = useState("User name"); 
+     let [email, setEmail] = useState("user@gmail.com"); 
+     let [password, setPassword] = useState("12344567");
+    const auth = getAuth(); 
+      
+    const handelSubmit = ()=>{ 
+      createUserWithEmailAndPassword(auth)
+      .then((userCredential) => {
+       name, 
+       email, 
+       password;
+   })
+   .catch((error) => {
+     const errorCode = error.code;
+     const errorMessage = error.message; 
+     console.log(errorCode); 
+     console.log(errorMessage);
+   }); 
+    }
+
+
   return (
     <section className=" pt-10">
       <div className="container">
@@ -22,7 +44,7 @@ const Registration = () => {
               <span className="forgot-password">
                 <a href="#">Forgot Password ?</a>
               </span>
-              <button className="login-button">Sign Up</button>   
+              <button onClick={handelSubmit} className="login-button">Sign Up</button>   
                <p>Alredy have an account. <Link className=" text-[#1c4ae0] border-b	 border-solid border-[#1c4ae0]" to="/login">Sign up</Link></p>
             </form>
           </div>
