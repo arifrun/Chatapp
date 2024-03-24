@@ -1,35 +1,78 @@
-import React, { useState } from "react"; 
-import { Link } from "react-router-dom"; 
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-   const Registration = () => { 
-     let [name, setName] = useState("User name"); 
-     let [email, setEmail] = useState("user@gmail.com"); 
-     let [password, setPassword] = useState("12344567");
-    const auth = getAuth(); 
-      
-    const handelSubmit = ()=>{ 
-      createUserWithEmailAndPassword(auth)
-      .then((userCredential) => {
-       name, 
-       email, 
-       password;
-   })
-   .catch((error) => {
-     const errorCode = error.code;
-     const errorMessage = error.message; 
-     console.log(errorCode); 
-     console.log(errorMessage);
-   }); 
+const Registration = () => {
+  const auth = getAuth(); 
+  const navigate = useNavigate()
+  let [name, setName] = useState("");
+  let [email, setEmail] = useState("");
+  let [password, setPassword] = useState("");
+
+  const [userError, setUserError] = useState({
+    nameError: "",
+    emailError: "",
+    passwordError: "",
+  });
+
+  const handelSubmit = () => {
+    if (!name) {
+      setUserError({ nameError: "Name is required !" });
+    } else if (!email) {
+      setUserError({ emailError: "Email is required" });
+    } else if (!password) {
+      setUserError({ passwordError: "password is required" });
+    } else {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          sendEmailVerification(auth.currentUser);
+
+          toast.success("Registration succesful!.Verify your email", {
+            position: "top-center",
+            autoClose: 3000,
+            closeOnClick: true,
+            theme: "light",
+          });
+          setName("");
+          setEmail("");
+          setPassword("");
+          setUserError({ emailError: "" });
+          setUserError({ passwordError: "" }); 
+          setTimeout(() => {
+            navigate("/login");
+          }, 3500);
+        })
+        .catch((error) => {
+          console.log(error.code);
+          if (error.code.includes("auth/invalid-email")) {
+            setUserError({ emailError: "Invalid Email" });
+          }
+          if (error.code.includes("auth/email-already-in-use")) {
+            setUserError({
+              emailError: "Email already in used, try with another email!",
+            });
+          }
+          if (error.code.includes("auth/weak-password")) {
+            setUserError({
+              passwordError: "Password should be at least 6 charecters",
+            });
+          }
+        });
     }
-
+  };
 
   return (
     <section className=" pt-10">
+      <ToastContainer />
       <div className="container">
         <div className=" text-center">
           <h2 className=" text-5xl font-bold text-brand">ChatApp</h2>
-
           <div className="registration">
             <h1 className=" font-primary font-bold text-3xl text-brand">
               Get started with easily register
@@ -37,16 +80,60 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
             <p className=" font-primary font-normal text-base text-secondary mt-2">
               Free register and you can enjoy it
             </p>
-            <form class="form">
-              <input className="input" type="text" placeholder="Full Name" />
-              <input className="input" type="email" placeholder="E-mail" />
-              <input className="input" type="password" placeholder="Password" />
+            <div className="form">
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="input"
+                type="text"
+                placeholder="Full Name"
+              />
+              {userError.nameError && (
+                <p className=" w-fit text-white text-start py-1 px-2 bg-red-500 rounded-lg mt-2">
+                  {userError.nameError}
+                </p>
+              )}
+
+              <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="input"
+                type="email"
+                placeholder="E-mail"
+              />
+              {userError.emailError && (
+                <p className=" w-fit text-white text-start py-1 px-2 bg-red-500 rounded-lg mt-2">
+                  {userError.emailError}
+                </p>
+              )}
+              <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input"
+                type="password"
+                placeholder="Password"
+              />
+              {userError.passwordError && (
+                <p className=" w-fit text-white text-start py-1 px-2 bg-red-500 rounded-lg mt-2">
+                  {userError.passwordError}
+                </p>
+              )}
               <span className="forgot-password">
                 <a href="#">Forgot Password ?</a>
               </span>
-              <button onClick={handelSubmit} className="login-button">Sign Up</button>   
-               <p>Alredy have an account. <Link className=" text-[#1c4ae0] border-b	 border-solid border-[#1c4ae0]" to="/login">Sign up</Link></p>
-            </form>
+              <button onClick={handelSubmit} className="login-button">
+                Sign Up
+              </button>
+              <p>
+                Alredy have an account.{" "}
+                <Link
+                  className=" text-[#1c4ae0] border-b border-solid border-[#1c4ae0]"
+                  to="/login"
+                >
+                  Sign up
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>

@@ -9,14 +9,14 @@ const ChatBox = () => {
           <img src="/user.png" alt="user" />
         </div>
         <div>
-          <h2 className=" text-xl font-primary text-white font-bold">
+          <h2 className=" text-xl font-primary text-white font-bold">  
             Eddie Lake
           </h2>
         </div>
       </div>
       <div className="messages-area">
         <div className="message"></div>
-        <div className="message"></div>
+        <div className="message"></div> 
         <div className="message"></div>
         <div className="message"></div>
       </div>
