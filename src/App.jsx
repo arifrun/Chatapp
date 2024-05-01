@@ -4,12 +4,12 @@ import {
   Route, 
   RouterProvider,
 } from "react-router-dom";
-import Registration from "./component/pages/Registration";
-import Login from "./component/pages/Login";
-import Home from "./component/pages/Home";
+import Registration from "./pages/Registration";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
 import Layout from "./component/Layout";
-import User from "./component/pages/User";
-import Chat from "./component/pages/Chat";
+import User from "./pages/User";
+import Chat from "./pages/Chat";
 
 function App() {
   const router = createBrowserRouter(

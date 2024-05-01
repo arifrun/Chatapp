@@ -4,16 +4,18 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  updateProfile,
 } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Registration = () => {
-  const auth = getAuth(); 
-  const navigate = useNavigate()
+  const auth = getAuth();
+  const navigate = useNavigate();
   let [name, setName] = useState("");
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
+ let  re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
   const [userError, setUserError] = useState({
     nameError: "",
@@ -22,31 +24,41 @@ const Registration = () => {
   });
 
   const handelSubmit = () => {
+      
     if (!name) {
       setUserError({ nameError: "Name is required !" });
     } else if (!email) {
       setUserError({ emailError: "Email is required" });
     } else if (!password) {
       setUserError({ passwordError: "password is required" });
-    } else {
+    } 
+    // else if(!re.test(password)){ 
+    //   setUserError({passwordError:"input a strong password"})
+    // }  
+     else {
       createUserWithEmailAndPassword(auth, email, password)
         .then(() => {
           sendEmailVerification(auth.currentUser);
-
-          toast.success("Registration succesful!.Verify your email", {
-            position: "top-center",
-            autoClose: 3000,
-            closeOnClick: true,
-            theme: "light",
+          updateProfile(auth.currentUser, {
+            displayName: name,
+            photoURL: "/profile.png",
+          }).then((res)=>{
+            toast.success("Registration Successful!. Verify Your Email", {
+              position: "top-center",
+              autoClose: 3000,
+              closeOnClick: true,
+              theme: "light",
+            });
+            setName("");
+            setEmail("");
+            setPassword("");
+            setUserError({ emailError: "" });
+            setUserError({ passwordError: "" });
+            setTimeout(() => {
+              navigate("/login");
+            }, 3500);
           });
-          setName("");
-          setEmail("");
-          setPassword("");
-          setUserError({ emailError: "" });
-          setUserError({ passwordError: "" }); 
-          setTimeout(() => {
-            navigate("/login");
-          }, 3500);
+
         })
         .catch((error) => {
           console.log(error.code);
@@ -118,14 +130,12 @@ const Registration = () => {
                   {userError.passwordError}
                 </p>
               )}
-              <span className="forgot-password">
-                <a href="#">Forgot Password ?</a>
-              </span>
+
               <button onClick={handelSubmit} className="login-button">
                 Sign Up
               </button>
               <p>
-                Alredy have an account.{" "}
+                Alredy have an account ?{" "}
                 <Link
                   className=" text-[#1c4ae0] border-b border-solid border-[#1c4ae0]"
                   to="/login"

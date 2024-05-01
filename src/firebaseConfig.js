@@ -1,15 +1,16 @@
 
-import { initializeApp } from "firebase/app"; 
+import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAQm_tpmm5RDQKj9O5erKEqQCPMam6lVrA",
-  authDomain: "chatapp-3721a.firebaseapp.com",
-  projectId: "chatapp-3721a",
-  storageBucket: "chatapp-3721a.appspot.com",
-  messagingSenderId: "593277113304",
-  appId: "1:593277113304:web:2158d32b8a86e9c0e418ad"
+  apiKey: "AIzaSyC1tyHVlOJGwJarMG99ooJGNsKh7YYHlb8",
+  authDomain: "chatapp-50fdd.firebaseapp.com",
+  databaseURL: "https://chatapp-50fdd-default-rtdb.firebaseio.com",
+  projectId: "chatapp-50fdd",
+  storageBucket: "chatapp-50fdd.appspot.com",
+  messagingSenderId: "1019259562947",
+  appId: "1:1019259562947:web:7fb108a67757473993ab76"
 };
 
-const app = initializeApp(firebaseConfig); 
 
-export default firebaseConfig
+const app = initializeApp(firebaseConfig);
+export default firebaseConfig;
