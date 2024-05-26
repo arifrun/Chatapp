@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom' 
 import { MdHome } from "react-icons/md"; 
 import { IoChatbubbleEllipsesSharp } from "react-icons/io5"; 
-import { FaUserAlt } from "react-icons/fa";
+
 import { useSelector } from 'react-redux';
 
 
@@ -34,7 +34,7 @@ const Navbar = () => {
                   <img src={user?.photoURL} alt="user" className='w-10 h-10 rounded-full'  />   
 
                   <div> 
-                  <p className=' text-primary font-semibold text-xl'>{user.displayName}</p>  
+                  <p className=' text-primary font-semibold text-xl'>{user?.displayName}</p>  
                   <p className=' text-secondary font-medium text-lg'>Edite profile</p>
                   </div>
                 </Link></li>                

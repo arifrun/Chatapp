@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { loggeduser } from "../slice/userSlice";
+import { loggeduser } from "../slice/userSlice"; 
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -45,7 +45,7 @@ const Login = () => {
             set(ref(db, "users/" + res.user.uid), {
               username: res.user.displayName,
               email: res.user.email,
-              profile_picture: res.user?.photoURL,
+              photoURL: res.user?.photoURL,
             })
               .then(() => {
                 toast.success("Login succesful!.", {
@@ -96,15 +96,14 @@ const Login = () => {
   const handelGoogle = () => {
     signInWithPopup(auth, provider)
       .then((res) => {
-      const credential =  GoogleAuthProvider.credentialFromResult(res);
-        const token = credential.accessToken;
-
-        const user = res.user;
-        console.log(user);
+        GoogleAuthProvider.credentialFromResult(res);
+        // const token = credential.accessToken; 
+        // const user = res.user;
+        // console.log(user);
         set(ref(db, "users/" + res.user.uid), {
           username: res.user.displayName,
           email: res.user.email,
-          profile_picture: res.user.photoURL,
+          photoURL:  res. user?. photoURL
         })
           .then(() => {
             toast.success("Login succesful!.", {

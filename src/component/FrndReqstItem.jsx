@@ -2,14 +2,17 @@ import React from 'react'
 import { IoMdMore } from "react-icons/io"; 
 
 
-const FrndReqstItem = () => {
+const FrndReqstItem = ({reqList}) => { 
+  console.log(reqList);
   return (
     <div className='flex gap-4 items-center'> 
-        <div> 
-            <img src=" /user.png" alt="user" />
+        <div className='w-12 rounded-full overflow-hidden'> 
+            <img className=' w-full' src={reqList?.photoURL} alt="user" />
         </div> 
         <div> 
-            <h2 className=' text-xl font-primary text-primary font-bold'>Eddie Lake</h2>      
+            <h2 className=' text-xl font-primary text-primary font-bold'> 
+            { reqList?.username}  
+             </h2>
         </div>   
         <div className=' flex flex-col gap-1 ml-auto'> 
             <button className=' font-primary text-sm py-1 px-3 bg-brand text-white rounded-lg w-fit'>Confirm</button> 

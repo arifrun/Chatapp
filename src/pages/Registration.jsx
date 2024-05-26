@@ -36,14 +36,14 @@ const Registration = () => {
     //   setUserError({passwordError:"input a strong password"})
     // }  
      else {
-      createUserWithEmailAndPassword(auth, email, password)
+      createUserWithEmailAndPassword(auth, email, password, name) 
         .then(() => {
           sendEmailVerification(auth.currentUser);
           updateProfile(auth.currentUser, {
             displayName: name,
-            photoURL: "/profile.png",
-          }).then((res)=>{
-            toast.success("Registration Successful!. Verify Your Email", {
+            photoURL: "/profile.png"
+          }).then(()=>{
+            toast.success("Registration Successful!. Verify Your Email", { 
               position: "top-center",
               autoClose: 3000,
               closeOnClick: true,
