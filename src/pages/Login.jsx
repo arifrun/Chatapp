@@ -53,7 +53,8 @@ const Login = () => {
                   autoClose: 3000,
                   closeOnClick: true,
                   theme: "light",
-                });
+                }); 
+                
                 localStorage.setItem("user", JSON.stringify(res.user));
                 dispatch(loggeduser(res.user));
                 setTimeout(() => {

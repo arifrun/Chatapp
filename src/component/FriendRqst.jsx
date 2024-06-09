@@ -25,6 +25,7 @@ onValue(starCountRef, (snapshot) =>{
   setRequestList(arr); 
 });
  },[]);   
+
  
  useEffect(() => {
   const starCountRef = ref(db, "users/");
@@ -55,12 +56,11 @@ onValue(starCountRef, (snapshot) =>{
 
           userList.map((item)=>
             reqId.senderId == item.key && (
-            <FrndReqstItem key={item.key} reqList={item}/>
+            <FrndReqstItem key={item.key} reqList={item} frndReqId ={reqId.key}/>
           ) 
         ) 
       ) 
       } 
-
       </div>
     </div>
   );

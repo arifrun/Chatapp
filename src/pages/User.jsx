@@ -4,7 +4,8 @@ import { IoMdMore } from "react-icons/io";
 import { useSelector } from "react-redux";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
-import { getDatabase } from "firebase/database";
+import { getDatabase, ref as dref, set } from "firebase/database";
+
 import {
   getStorage,
   ref,
@@ -19,11 +20,12 @@ const User = () => {
   const db = getDatabase();
   const storage = getStorage();
   const user = useSelector((state) => state.userSlice.user);
-  const [enabeEdit, setEnableEdit] = useState(false); 
+  const [enabeEdit, setEnableEdit] = useState(false);
   // const[name, setName] = useState("")
   const [image, setImage] = useState("");
   const [cropData, setCropData] = useState("");
   const cropperRef = createRef();
+  const [loading, setLoading] = useState(false);
 
   const onChange = (e) => {
     e.preventDefault();
@@ -50,6 +52,7 @@ const User = () => {
     setImage("");
   };
   const handelUpload = () => {
+    setLoading(true);
     if (cropData) {
       const storageRef = ref(storage, user?.uid);
       const message4 = cropData;
@@ -57,12 +60,21 @@ const User = () => {
         getDownloadURL(storageRef).then((downloadURL) => {
           onAuthStateChanged(auth, () => {
             updateProfile(auth.currentUser, {
-              profile_picture: downloadURL,  
-
+              photoURL: downloadURL,
             }).then(() => {
+              set(dref(db, "users/" + user.uid), {
+                email: user.email,
+                photoURL: downloadURL, 
+                username: user.displayName,
+              }); 
+              localStorage.setItem("user", JSON.stringify(auth.currentUser));
+              dispatch(loggeduser(auth.currentUser)); 
+
               setEnableEdit(false);
               setCropData("");
-              setImage("");
+              setImage(""); 
+              setLoading(false);
+              // window.location.reload();
             });
           });
         });
@@ -74,16 +86,24 @@ const User = () => {
       {enabeEdit && (
         <div className=" absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.6)] border p-5 rounded-xl flex justify-center items-center ">
           <div className=" w-1/4 bg-white  py-5 px-5 rounded-xl ">
-            <div className="flex justify-between"> 
-            { 
-               cropData  && 
-                   (<button
+            <div className="flex justify-between">
+              {cropData &&
+                (loading ? (
+                  <button className=" py-1 w-20 bg-white-600 rounded-xl text-white flex justify-center items-center">
+                    <div className="flex flex-row gap-2">
+                      <div className="w-4 h-4 rounded-full bg-red-600 animate-bounce"></div>
+                      <div className="w-4 h-4 rounded-full bg-blue-600 animate-bounce [animation-delay:-.3s]"></div>
+                      <div className="w-4 h-4 rounded-full bg-yellow-500 animate-bounce [animation-delay:-.5s]"></div>
+                    </div>
+                  </button>
+                ) : (
+                  <button
                     onClick={handelUpload}
-                    className=" py-2 px-4 bg-green-600 rounded-xl text-white block"
+                    className=" py-1 w-20 bg-green-600 rounded-xl text-white flex justify-center items-center"
                   >
                     Save
-                  </button>) 
-                  }
+                  </button>
+                ))}
               <button
                 onClick={handelClose}
                 className=" py-1 px-3 bg-red-600 rounded-lg text-white "
@@ -132,12 +152,9 @@ const User = () => {
                 Crop Image
               </button>
               <img src={cropData} alt="" className="28" />
-              <div>
-            
-             
-              </div>
+              <div></div>
             </div>
-          </div>   
+          </div>
         </div>
       )}
 
