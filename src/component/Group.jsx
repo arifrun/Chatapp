@@ -1,9 +1,24 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import Title from "./Title";
 import { GrSearch } from "react-icons/gr";
-import GroupItems from "./GroupItems";
+import GroupItems from "./GroupItems"; 
+import { getDatabase, onValue,  ref} from "firebase/database"; 
 
-const Group = () => {
+
+const Group = () => {  
+  const db = getDatabase();  
+  const [groupLIst, setGroupList] = useState([]);
+  useEffect(()=>{ 
+    const starCountRef = ref(db, 'group/'); 
+    let arr = [];
+     onValue(starCountRef, (snapshot) => {
+        snapshot.forEach((item) =>{ 
+            arr.push({...item.val(), key: item.key})
+        }) 
+        setGroupList(arr);
+   });
+  },[]); 
+
   return (
     <div className=" w-1/3 p-4 justify-between bg-white rounded-2xl shadow-lg">
       <Title title="Group" />
@@ -17,10 +32,12 @@ const Group = () => {
       </div>
 
       <div className="flex flex-col gap-5 mt-5">   
-        <GroupItems />
-        <GroupItems />
-        <GroupItems />
-        <GroupItems />
+        { 
+          groupLIst.map((item) =>( 
+            <GroupItems key={item.key} data={item}/>
+          ))
+        }
+
       </div>
     </div>
   );

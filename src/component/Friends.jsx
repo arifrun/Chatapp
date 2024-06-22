@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 const Friends = () => {    
   const db = getDatabase();
   const user = useSelector((state) => state.userSlice.user);
-  const [requestList, setRequestList] = useState([]);  
+  // const [requestList, setRequestList] = useState([]);  
   const[friendList, setFriendList] = useState([]);
   useEffect(() => {
     let arr = [];
