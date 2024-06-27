@@ -1,13 +1,20 @@
-import React from 'react'
 
-const ChatList = () => {
+import { useDispatch } from 'react-redux'
+import { chatFriendInfo } from '../slice/currentChatFriendInfo';
+
+const ChatList = ({Data}) => {  
+    const dispatch = useDispatch();
+    const handelClick = () =>{ 
+      dispatch(chatFriendInfo(Data))  
+    }
     return (
-        <div className='flex gap-4 cursor-pointer'> 
-            <div> 
-                <img src="/user.png" alt="user" />
+        <div onClick={handelClick} className='flex gap-4 border-b cursor-pointer'> 
+            <div className='w-12 h-12 rounded-full overflow-hidden'> 
+                <img src= {Data.friendImg} alt="user" />
             </div> 
             <div> 
-                <h2 className=' text-xl font-primary text-primary font-bold'>Eddie Lake</h2> 
+                <h2 className=' text-xl font-primary text-primary font-bold'> 
+                   {Data.friendName} </h2> 
                  <p className='  text-lg font-primary text-secondary font-normal'>Need money.....</p>    
             </div>  
             <p className='ml-auto text-lg font-primary text-secondary font-normal'>10:30</p>                            

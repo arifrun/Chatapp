@@ -7,8 +7,7 @@ import { useSelector } from "react-redux";
 
 const Friends = () => {    
   const db = getDatabase();
-  const user = useSelector((state) => state.userSlice.user);
-  // const [requestList, setRequestList] = useState([]);  
+  const user = useSelector((state) => state.userSlice.user); 
   const[friendList, setFriendList] = useState([]);
   useEffect(() => {
     let arr = [];
@@ -57,7 +56,7 @@ const Friends = () => {
             : 
             <p className=" text-center">No Friend Aailable</p>
           }
-      </div>
+      </div>  
     </div>
   );
 };
