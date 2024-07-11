@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, json, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -11,11 +11,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { useDispatch } from "react-redux";
-import { loggeduser } from "../slice/userSlice"; 
+import { useDispatch, useSelector } from "react-redux";
+import { loggeduser } from "../slice/userSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.userSlice.user);
   const auth = getAuth();
   const db = getDatabase();
   let navigate = useNavigate();
@@ -53,8 +54,8 @@ const Login = () => {
                   autoClose: 3000,
                   closeOnClick: true,
                   theme: "light",
-                }); 
-                
+                });
+
                 localStorage.setItem("user", JSON.stringify(res.user));
                 dispatch(loggeduser(res.user));
                 setTimeout(() => {
@@ -98,13 +99,10 @@ const Login = () => {
     signInWithPopup(auth, provider)
       .then((res) => {
         GoogleAuthProvider.credentialFromResult(res);
-        // const token = credential.accessToken; 
-        // const user = res.user;
-        // console.log(user);
         set(ref(db, "users/" + res.user.uid), {
           username: res.user.displayName,
           email: res.user.email,
-          photoURL:  res. user?. photoURL
+          photoURL: res.user?.photoURL,
         })
           .then(() => {
             toast.success("Login succesful!.", {
@@ -124,12 +122,16 @@ const Login = () => {
           });
       })
       .catch((error) => {
-        // Handle Errors here.
         const errorMessage = error.message;
         console.log(errorMessage);
-        // ...
       });
   };
+  useEffect(() => {
+    if (user) {
+      return navigate("/");
+    }
+  }, []);
+
   return (
     <section className=" pt-10">
       <ToastContainer />

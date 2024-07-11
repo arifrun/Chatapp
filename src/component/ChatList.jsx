@@ -6,6 +6,7 @@ const ChatList = ({Data}) => {
     const dispatch = useDispatch();
     const handelClick = () =>{ 
       dispatch(chatFriendInfo(Data))  
+      localStorage.setItem("chatFriendInfo", JSON.stringify(Data));
     }
     return (
         <div onClick={handelClick} className='flex gap-4 border-b cursor-pointer'> 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   getAuth,
@@ -8,14 +8,16 @@ import {
 } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
 
 const Registration = () => {
-  const auth = getAuth();
+  const auth = getAuth(); 
+  const user = useSelector((state) => state.userSlice.user);
   const navigate = useNavigate();
   let [name, setName] = useState("");
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
- let  re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  let re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
   const [userError, setUserError] = useState({
     nameError: "",
@@ -24,26 +26,22 @@ const Registration = () => {
   });
 
   const handelSubmit = () => {
-      
     if (!name) {
       setUserError({ nameError: "Name is required !" });
     } else if (!email) {
       setUserError({ emailError: "Email is required" });
     } else if (!password) {
       setUserError({ passwordError: "password is required" });
-    } 
-    // else if(!re.test(password)){ 
-    //   setUserError({passwordError:"input a strong password"})
-    // }  
-     else {
-      createUserWithEmailAndPassword(auth, email, password, name) 
+    }
+    else {
+      createUserWithEmailAndPassword(auth, email, password, name)
         .then(() => {
           sendEmailVerification(auth.currentUser);
           updateProfile(auth.currentUser, {
             displayName: name,
-            photoURL: "/profile.png"
-          }).then(()=>{
-            toast.success("Registration Successful!. Verify Your Email", { 
+            photoURL: "/profile.png",
+          }).then(() => {
+            toast.success("Registration Successful!. Verify Your Email", {
               position: "top-center",
               autoClose: 3000,
               closeOnClick: true,
@@ -58,7 +56,6 @@ const Registration = () => {
               navigate("/login");
             }, 3500);
           });
-
         })
         .catch((error) => {
           console.log(error.code);
@@ -77,7 +74,12 @@ const Registration = () => {
           }
         });
     }
-  };
+  }; 
+  useEffect(() => {
+    if (user) {
+      return navigate("/");
+    }
+  }, []);
 
   return (
     <section className=" pt-10">
@@ -96,7 +98,7 @@ const Registration = () => {
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="input"
+                className="input my-5"
                 type="text"
                 placeholder="Full Name"
               />
@@ -109,7 +111,7 @@ const Registration = () => {
               <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="input"
+                className="input my-5"
                 type="email"
                 placeholder="E-mail"
               />
@@ -143,7 +145,7 @@ const Registration = () => {
                   Sign up
                 </Link>
               </p>
-            </div>
+            </div>  
           </div>
         </div>
       </div>
